@@ -62,3 +62,11 @@ def user_profile(request, id):
     else:
         return HttpResponse(f"<h1 style='color: red; text-align: center;'>User not found</h1>")
 
+
+
+
+
+def landing(request):
+    # render page ??
+    # return HttpResponse("landing")
+    return render(request, 'landing.html')
