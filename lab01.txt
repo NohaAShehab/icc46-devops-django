@@ -1,0 +1,8 @@
+1- install django
+2- create project marketPlace 
+3- create 3 applications products, contactus, aboutus 
+in each application create one page 
+--> add url 
+products/index
+contactus/contact
+aboutus/about
