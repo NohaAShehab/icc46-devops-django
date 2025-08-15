@@ -1,0 +1,290 @@
+{% extends 'layouts/base.html' %}
+
+{% block body %}
+<style>
+    .student-detail-container {
+        margin-top: 70px;
+        padding: 1.5rem;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    .page-header {
+        text-align: center;
+        margin-bottom: 2rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 3px solid #667eea;
+    }
+    
+    .page-header h1 {
+        color: #333;
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .page-header .subtitle {
+        color: #666;
+        font-size: 1rem;
+    }
+    
+    .student-card {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 3px 15px rgba(0,0,0,0.1);
+        overflow: hidden;
+        margin-bottom: 1.5rem;
+    }
+    
+    .student-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 1.5rem;
+        text-align: center;
+    }
+    
+    .student-avatar {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1rem;
+        font-size: 2rem;
+        color: white;
+        border: 3px solid rgba(255,255,255,0.3);
+    }
+    
+    .student-name {
+        font-size: 1.5rem;
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+    }
+    
+    .student-id {
+        font-size: 1rem;
+        opacity: 0.9;
+    }
+    
+    .student-details {
+        padding: 1.5rem;
+    }
+    
+    .detail-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.75rem 0;
+        border-bottom: 1px solid #e9ecef;
+    }
+    
+    .detail-row:last-child {
+        border-bottom: none;
+    }
+    
+    .detail-label {
+        font-weight: 600;
+        color: #495057;
+        font-size: 1rem;
+    }
+    
+    .detail-value {
+        color: #333;
+        font-size: 1rem;
+    }
+    
+    .detail-value.highlight {
+        color: #667eea;
+        font-weight: 600;
+    }
+    
+    .actions-section {
+        text-align: center;
+        margin-top: 1.5rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid #e9ecef;
+    }
+    
+    .btn {
+        display: inline-block;
+        padding: 0.6rem 1.2rem;
+        text-decoration: none;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        font-weight: 500;
+        text-align: center;
+        transition: all 0.3s ease;
+        border: none;
+        cursor: pointer;
+        margin: 0 0.4rem;
+    }
+    
+    .btn-primary {
+        background: #667eea;
+        color: white;
+    }
+    
+    .btn-primary:hover {
+        background: #5a6fd8;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+    }
+    
+    .btn-secondary {
+        background: #6c757d;
+        color: white;
+    }
+    
+    .btn-secondary:hover {
+        background: #5a6268;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(108, 117, 125, 0.3);
+    }
+    
+    .btn-danger {
+        background: #dc3545;
+        color: white;
+    }
+    
+    .btn-danger:hover {
+        background: #c82333;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(220, 53, 69, 0.3);
+    }
+    
+    .back-link {
+        display: inline-block;
+        margin-bottom: 1.5rem;
+        color: #667eea;
+        text-decoration: none;
+        font-weight: 500;
+        transition: color 0.3s ease;
+    }
+    
+    .back-link:hover {
+        color: #5a6fd8;
+        text-decoration: underline;
+    }
+    
+    .back-link::before {
+        content: "← ";
+        margin-right: 0.5rem;
+    }
+    
+    .status-badge {
+        display: inline-block;
+        padding: 0.25rem 0.6rem;
+        border-radius: 12px;
+        font-size: 0.75rem;
+        font-weight: 500;
+        text-transform: uppercase;
+    }
+    
+    .status-active {
+        background: #d4edda;
+        color: #155724;
+    }
+    
+    .status-inactive {
+        background: #f8d7da;
+        color: #721c24;
+    }
+    
+    @media (max-width: 768px) {
+        .student-detail-container {
+            padding: 1rem;
+        }
+        
+        .page-header h1 {
+            font-size: 1.8rem;
+        }
+        
+        .detail-row {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.4rem;
+        }
+        
+        .student-header {
+            padding: 1.2rem;
+        }
+        
+        .student-avatar {
+            width: 70px;
+            height: 70px;
+            font-size: 1.8rem;
+        }
+    }
+</style>
+
+<div class="student-detail-container">
+    
+    <div class="page-header">
+        <h1>Student Details</h1>
+        <p class="subtitle">View complete information about this student</p>
+    </div>
+    
+    <div class="student-card">
+        <div class="student-header">
+            <div class="student-avatar">
+                {{ student.name|first|upper }}
+            </div>
+            <div class="student-name">{{ student.name }}</div>
+            <div class="student-id">ID: {{ student.id }}</div>
+        </div>
+        
+        <div class="student-details">
+            <div class="detail-row">
+                <span class="detail-label">Student ID:</span>
+                <span class="detail-value highlight">{{ student.id }}</span>
+            </div>
+            
+            <div class="detail-row">
+                <span class="detail-label">Full Name:</span>
+                <span class="detail-value">{{ student.name }}</span>
+            </div>
+            
+            <div class="detail-row">
+                <span class="detail-label">Email:</span>
+                <span class="detail-value">{{ student.email }}</span>
+            </div>
+            
+            <div class="detail-row">
+                <span class="detail-label">Gender:</span>
+                <span class="detail-value">{{ student.gender }}</span>
+            </div>
+            
+            <div class="detail-row">
+                <span class="detail-label">Age:</span>
+                <span class="detail-value">{{ student.age }} years old</span>
+            </div>
+            
+            {% if student.created_at %}
+            <div class="detail-row">
+                <span class="detail-label">Registration Date:</span>
+                <span class="detail-value">{{ student.created_at|date:"F j, Y" }}</span>
+            </div>
+            {% endif %}
+            
+            {% if student.updated_at %}
+            <div class="detail-row">
+                <span class="detail-label">Last Updated:</span>
+                <span class="detail-value">{{ student.updated_at|date:"F j, Y" }}</span>
+            </div>
+            {% endif %}
+            
+            <div class="detail-row">
+                <span class="detail-label">Status:</span>
+                <span class="status-badge status-active">Active</span>
+            </div>
+        </div>
+        
+        <div class="actions-section">
+            <a href="#" class="btn btn-primary">Edit Student</a>
+            <a href="#" class="btn btn-danger">Delete Student</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
