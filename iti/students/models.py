@@ -57,11 +57,29 @@ class Student(models.Model):
     gender = models.CharField(max_length=255, choices=[('male', 'Male'), ('female', 'Female')], 
     null=True)
     birth_date = models.DateField(null=True)
+    # I need to add field represent created_at and updated_at
+    created_at = models.DateTimeField(auto_now_add=True, null=True) # this value will be automatically set when the object is created
+    updated_at = models.DateTimeField(auto_now=True, null=True) # this value will be automatically set when the object is updated
+
+    def __str__(self):
+        return f"{self.name}"
+
+    
+
+
+
 
 
  
+"""
+we need to try the table in admin panel
+we need to create a super user
+python manage.py createsuperuser
+/
 
-# I need to apply the changes to the db ?
 
 
+
+
+"""
 
