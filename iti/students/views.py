@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from students.models import Student
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 
 # Create your views here.
 
@@ -48,6 +48,16 @@ get return with one
 Student.objects.filter(name="John") "select * from students where name='John';"
 filter return with list of objects 
 
+4- create a new student ::: 
+student = Student()
+student.name = "new"
+student.email = "newstudent@gmail.com"
+student.age = 3
+student.gender = "male"
+student.birth_date = "2025-08-08"
+student.save()
+
+
 
 """
 
@@ -69,4 +79,70 @@ def show_student(request, id):
     student = get_object_or_404(Student, id=id)
     return render(request, 'students/show.html', 
     context={'student': student})
+
+
+
+
+def delete_student(request, id):
+    student = get_object_or_404(Student, id=id)
+    # django provides a way to delete an object ??
+    # delete function 
+    student.delete()  # this will delete the object from the database
+    ## I need to redirect to the index page 
+    return redirect('students.index')  # accept url name 
+
+
+
+def create_student(request):
+    # I need to print the request variable 
+    print(request)
+    """
+    You need aform -> to get the data from the user 
+    
+    """
+
+    # I need to decide what to do if the request method is post /?
+
+
+    if request.method == 'POST':
+        print(request.POST)
+        """
+        <QueryDict: {'csrfmiddlewaretoken': ['PLh701PEP2qEjeAhejdXXuMeAHI2S5riFybpZ1dBswwSsVAdnuuCA03vxi0Tmnr6'],
+        'name': ['new'], 
+        'email': ['newstudent@gmail.com'], 
+        'age': ['3'], 
+        'gender': ['male'], 
+        'birth_date': ['2025-08-08']}>
+        """
+        # I need to get the data 
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        age = request.POST.get('age')
+        gender = request.POST.get('gender')
+        birth_date = request.POST.get('birth_date')
+
+    
+        # I need to create a new student object 
+        student = Student()
+        student.name = name
+        student.email = email
+        student.age = age
+        student.gender = gender
+        student.birth_date = birth_date
+        student.save() # save object to the database
+        print(student.id)
+
+        # I need to redirect to the index page 
+        # return redirect('students.index')
+        return redirect('students.show', id=student.id)
+
+
+
+
+    return render(request, 'students/create.html')
+
+
+
+
+    
    
