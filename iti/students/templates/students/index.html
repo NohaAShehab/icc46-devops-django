@@ -1,149 +1,25 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Students Directory - ITI</title>
+{% extends 'layouts/base.html' %}
+
+{% block body %}
+<div style="margin-top: 70px; padding: 2rem;">
+    <h1>Students Directory</h1>
+    
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background: #f5f7fa;
-        }
-
-        /* Header */
-        .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 2rem 0;
-            text-align: center;
-        }
-
-        .header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .header p {
-            font-size: 1.1rem;
-            opacity: 0.9;
-        }
-
-        /* Container */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem;
-        }
-
-        /* Search and Controls */
-        .controls {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            margin-bottom: 2rem;
-            display: flex;
-            gap: 1rem;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-
-        .search-box {
-            flex: 1;
-            min-width: 300px;
-            position: relative;
-        }
-
-        .search-input {
-            width: 100%;
-            padding: 0.8rem 1rem;
-            border: 2px solid #e1e5e9;
-            border-radius: 25px;
-            font-size: 1rem;
-            transition: border-color 0.3s ease;
-        }
-
-        .search-input:focus {
-            outline: none;
-            border-color: #667eea;
-        }
-
-        .search-icon {
-            position: absolute;
-            right: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #999;
-        }
-
-        .add-student-btn {
-            background: #28a745;
-            color: white;
-            padding: 0.8rem 1.5rem;
-            border: none;
-            border-radius: 25px;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-block;
-        }
-
-        .add-student-btn:hover {
-            background: #218838;
-            transform: translateY(-2px);
-        }
-
-        /* Stats Cards */
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
-
-        .stat-card {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 10px;
-            text-align: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-
-        .stat-number {
-            font-size: 2rem;
-            font-weight: bold;
-            color: #667eea;
-            margin-bottom: 0.5rem;
-        }
-
-        .stat-label {
-            color: #666;
-            font-size: 0.9rem;
-        }
-
-        /* Table */
         .table-container {
             background: white;
             border-radius: 10px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             overflow: hidden;
+            margin-top: 2rem;
         }
-
-        .students-table {
+        
+        .table {
             width: 100%;
             border-collapse: collapse;
+            margin: 0;
         }
-
-        .students-table th {
+        
+        .table th {
             background: #f8f9fa;
             padding: 1rem;
             text-align: left;
@@ -151,377 +27,78 @@
             color: #495057;
             border-bottom: 2px solid #e9ecef;
         }
-
-        .students-table td {
+        
+        .table td {
             padding: 1rem;
             border-bottom: 1px solid #e9ecef;
             vertical-align: middle;
         }
-
-        .students-table tr:hover {
+        
+        .table tr:hover {
             background: #f8f9fa;
         }
-
-        .student-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-            font-size: 0.9rem;
+        
+        .table-striped tbody tr:nth-child(even) {
+            background: #f8f9fa;
         }
-
-        .student-name {
-            font-weight: 600;
-            color: #333;
-        }
-
-        .student-email {
-            color: #667eea;
-            text-decoration: none;
-        }
-
-        .student-email:hover {
-            text-decoration: underline;
-        }
-
-        .status-badge {
-            padding: 0.3rem 0.8rem;
-            border-radius: 15px;
-            font-size: 0.8rem;
-            font-weight: 500;
-        }
-
-        .status-active {
-            background: #d4edda;
-            color: #155724;
-        }
-
-        .status-inactive {
-            background: #f8d7da;
-            color: #721c24;
-        }
-
-        .action-buttons {
-            display: flex;
-            gap: 0.5rem;
-        }
-
-        .btn-edit, .btn-delete {
-            padding: 0.4rem 0.8rem;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 0.8rem;
-            transition: all 0.3s ease;
-        }
-
-        .btn-edit {
-            background: #ffc107;
-            color: #212529;
-        }
-
-        .btn-edit:hover {
-            background: #e0a800;
-        }
-
-        .btn-delete {
-            background: #dc3545;
-            color: white;
-        }
-
-        .btn-delete:hover {
-            background: #c82333;
-        }
-
-        /* Pagination */
-        .pagination {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 0.5rem;
-            margin-top: 2rem;
-        }
-
-        .pagination button {
-            padding: 0.5rem 1rem;
-            border: 1px solid #dee2e6;
+        
+        .table-striped tbody tr:nth-child(odd) {
             background: white;
-            color: #495057;
-            cursor: pointer;
-            border-radius: 5px;
-            transition: all 0.3s ease;
         }
-
-        .pagination button:hover {
-            background: #e9ecef;
+        
+        .table-striped tbody tr:hover {
+            background: #e9ecef !important;
         }
-
-        .pagination button.active {
-            background: #667eea;
-            color: white;
-            border-color: #667eea;
-        }
-
-        /* Empty State */
-        .empty-state {
+        
+        .empty-message {
             text-align: center;
             padding: 3rem;
             color: #666;
+            font-style: italic;
         }
-
-        .empty-state-icon {
-            font-size: 4rem;
+        
+        .student-count {
+            background: #667eea;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            display: inline-block;
             margin-bottom: 1rem;
-            opacity: 0.5;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .container {
-                padding: 1rem;
-            }
-            
-            .controls {
-                flex-direction: column;
-                align-items: stretch;
-            }
-            
-            .search-box {
-                min-width: auto;
-            }
-            
-            .students-table {
-                font-size: 0.9rem;
-            }
-            
-            .students-table th,
-            .students-table td {
-                padding: 0.5rem;
-            }
-            
-            .action-buttons {
-                flex-direction: column;
-            }
-        }
-
-        /* Loading Animation */
-        .loading {
-            text-align: center;
-            padding: 2rem;
-            color: #666;
-        }
-
-        .spinner {
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid #667eea;
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 1rem;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            font-weight: 500;
         }
     </style>
-</head>
-<body>
-    <!-- Header -->
-    <header class="header">
-        <h1>Students Directory</h1>
-        <p>Manage and view all registered students at ITI</p>
-    </header>
-
-    <div class="container">
-        <!-- Search and Controls -->
-        <div class="controls">
-            <div class="search-box">
-                <input type="text" class="search-input" placeholder="Search students by name, email, or ID..." id="searchInput">
-                <span class="search-icon">🔍</span>
-            </div>
-            <a href="#" class="add-student-btn">+ Add New Student</a>
-        </div>
-
-        <!-- Statistics -->
-        <div class="stats">
-            <div class="stat-card">
-                <div class="stat-number" id="totalStudents">0</div>
-                <div class="stat-label">Total Students</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number" id="activeStudents">0</div>
-                <div class="stat-label">Active Students</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number" id="maleStudents">0</div>
-                <div class="stat-label">Male Students</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number" id="femaleStudents">0</div>
-                <div class="stat-label">Female Students</div>
-            </div>
-        </div>
-
-        <!-- Students Table -->
-        <div class="table-container">
-            <table class="students-table" id="studentsTable">
-                <thead>
-                    <tr>
-                        <th>Student</th>
-                        <th>Email</th>
-                        <th>Phone</th>
-                        <th>Age</th>
-                        <th>Gender</th>
-                        <th>Status</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody id="studentsTableBody">
-                    <!-- Sample data - replace with dynamic content -->
-                    <tr>
-                        <td>
-                            <div style="display: flex; align-items: center; gap: 1rem;">
-                                <div class="student-avatar">JD</div>
-                                <div>
-                                    <div class="student-name">John Doe</div>
-                                    <div style="font-size: 0.8rem; color: #666;">ID: ST001</div>
-                                </div>
-                            </div>
-                        </td>
-                        <td><a href="mailto:john.doe@example.com" class="student-email">john.doe@example.com</a></td>
-                        <td>+1 (555) 123-4567</td>
-                        <td>22</td>
-                        <td>Male</td>
-                        <td><span class="status-badge status-active">Active</span></td>
-                        <td>
-                            <div class="action-buttons">
-                                <button class="btn-edit">Edit</button>
-                                <button class="btn-delete">Delete</button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div style="display: flex; align-items: center; gap: 1rem;">
-                                <div class="student-avatar">JS</div>
-                                <div>
-                                    <div class="student-name">Jane Smith</div>
-                                    <div style="font-size: 0.8rem; color: #666;">ID: ST002</div>
-                                </div>
-                            </div>
-                        </td>
-                        <td><a href="mailto:jane.smith@example.com" class="student-email">jane.smith@example.com</a></td>
-                        <td>+1 (555) 987-6543</td>
-                        <td>20</td>
-                        <td>Female</td>
-                        <td><span class="status-badge status-active">Active</span></td>
-                        <td>
-                            <div class="action-buttons">
-                                <button class="btn-edit">Edit</button>
-                                <button class="btn-delete">Delete</button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div style="display: flex; align-items: center; gap: 1rem;">
-                                <div class="student-avatar">MJ</div>
-                                <div>
-                                    <div class="student-name">Mike Johnson</div>
-                                    <div style="font-size: 0.8rem; color: #666;">ID: ST003</div>
-                                </div>
-                            </div>
-                        </td>
-                        <td><a href="mailto:mike.johnson@example.com" class="student-email">mike.johnson@example.com</a></td>
-                        <td>+1 (555) 456-7890</td>
-                        <td>25</td>
-                        <td>Male</td>
-                        <td><span class="status-badge status-inactive">Inactive</span></td>
-                        <td>
-                            <div class="action-buttons">
-                                <button class="btn-edit">Edit</button>
-                                <button class="btn-delete">Delete</button>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <!-- Pagination -->
-        <div class="pagination">
-            <button>Previous</button>
-            <button class="active">1</button>
-            <button>2</button>
-            <button>3</button>
-            <button>Next</button>
-        </div>
+    
+    <div class="student-count">
+        Total Students: {{ students|length }}
     </div>
-
-    <script>
-        // Search functionality
-        document.getElementById('searchInput').addEventListener('input', function(e) {
-            const searchTerm = e.target.value.toLowerCase();
-            const tableBody = document.getElementById('studentsTableBody');
-            const rows = tableBody.getElementsByTagName('tr');
-
-            for (let row of rows) {
-                const text = row.textContent.toLowerCase();
-                if (text.includes(searchTerm)) {
-                    row.style.display = '';
-                } else {
-                    row.style.display = 'none';
-                }
-            }
-        });
-
-        // Update statistics
-        function updateStats() {
-            const rows = document.querySelectorAll('#studentsTableBody tr');
-            const totalStudents = rows.length;
-            const activeStudents = Array.from(rows).filter(row => 
-                row.querySelector('.status-active')
-            ).length;
-            const maleStudents = Array.from(rows).filter(row => 
-                row.textContent.includes('Male')
-            ).length;
-            const femaleStudents = Array.from(rows).filter(row => 
-                row.textContent.includes('Female')
-            ).length;
-
-            document.getElementById('totalStudents').textContent = totalStudents;
-            document.getElementById('activeStudents').textContent = activeStudents;
-            document.getElementById('maleStudents').textContent = maleStudents;
-            document.getElementById('femaleStudents').textContent = femaleStudents;
-        }
-
-        // Initialize stats
-        updateStats();
-
-        // Add event listeners for action buttons
-        document.addEventListener('click', function(e) {
-            if (e.target.classList.contains('btn-edit')) {
-                const row = e.target.closest('tr');
-                const studentName = row.querySelector('.student-name').textContent;
-                alert(`Edit student: ${studentName}`);
-            }
-            
-            if (e.target.classList.contains('btn-delete')) {
-                const row = e.target.closest('tr');
-                const studentName = row.querySelector('.student-name').textContent;
-                if (confirm(`Are you sure you want to delete ${studentName}?`)) {
-                    row.remove();
-                    updateStats();
-                }
-            }
-        });
-    </script>
-</body>
-</html>
+    
+    <div class="table-container">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Age</th>
+                    <th>ID</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if students %}
+                    {% for student in students %}
+                    <tr>
+                        <td>{{ student.name }}</td>
+                        <td>{{ student.age }}</td>
+                        <td>{{ student.id }}</td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="3" class="empty-message">
+                            No students found. Please add some students to see them here.
+                        </td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

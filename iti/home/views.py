@@ -74,3 +74,11 @@ def landing(request):
 
 def index(request):
     return render(request, 'home/index.html')
+
+
+def test_layout(request):
+    return render(request, 'layouts/base.html')
+
+
+def test_layout_content(request):
+    return render(request, 'home/test.html')
