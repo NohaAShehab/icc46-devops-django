@@ -76,11 +76,33 @@ WSGI_APPLICATION = 'iti.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
+# to use postgres database you need to install the psycopg2 library
+# pip install psycopg2
+# or pip install psycopg2-binary
+# then you need to add the following to the DATABASES dictionary
+# 'ENGINE': 'django.db.backends.postgresql',
+# 'NAME': 'your_database_name',
+# 'USER': 'your_username',
+# 'PASSWORD': 'your_password',
+# 'HOST': 'your_host',
+# 'PORT': 'your_port',
+
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'django', # this is the name of the database
+        'USER': 'django', # this is the username of the database
+        'PASSWORD': 'iti', # this is the password of the database
+        'HOST': 'localhost', # this is the host of the database
+        'PORT': '5432', # this is the port of the database
     }
 }
 
