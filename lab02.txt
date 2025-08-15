@@ -1,0 +1,12 @@
+1- connect the appliction to database
+2- create model Product (name, price, image ? any like, instock items, created_at, updated_at,
+code unique, description)
+
+3- connect application to db 
+4- run migrations 
+5- add model to the admin panel 
+6- implement functionalities of create product, list all , delete product , show product 
+7- beautiful desing is a must (hint use AI)
+don't forget to apply template inheritance, and the use url nameing 
+
+bonus : implement edit functionality 
