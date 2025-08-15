@@ -69,4 +69,8 @@ def user_profile(request, id):
 def landing(request):
     # render page ??
     # return HttpResponse("landing")
-    return render(request, 'landing.html')
+    return render(request, 'home/landing.html')
+
+
+def index(request):
+    return render(request, 'home/index.html')

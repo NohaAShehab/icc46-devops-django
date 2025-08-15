@@ -6,4 +6,5 @@ from django.http import HttpResponse
 
 def students_list(request):
     # return HttpResponse("students_list")
-    return render(request, 'index.html')
+    return render(request, 'students/index.html')
+

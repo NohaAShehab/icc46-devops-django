@@ -30,6 +30,8 @@ ALLOWED_HOSTS = []
 
 # Application definition  
 # django project read application associated with the project from this list 
+# when project need to render a template it will search for the template in the 
+# app_name/templates/
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -38,8 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'students.apps.StudentsConfig',
     'home.apps.HomeConfig',
-    'students.apps.StudentsConfig'
 ]
 
 MIDDLEWARE = [
