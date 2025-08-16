@@ -41,3 +41,7 @@ def show(request, id):
 
     return render(request, 'departments/show.html', 
     context={'department': department})
+
+
+
+

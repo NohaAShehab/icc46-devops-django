@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect
-from students.forms import StudentForm
+from students.forms import StudentForm, StudentModelForm
 from students.models import Student
 
 
@@ -177,3 +177,21 @@ def create_via_form(request):
     return render(request, 'students/createByForm.html', 
     context={'form': form})
 
+
+
+def edit_student(request, id):
+    student = get_object_or_404(Student, id=id)
+
+    form = StudentModelForm(instance=student)
+
+    if request.method == 'POST':
+
+        form = StudentModelForm(request.POST, instance=student)
+
+        if form.is_valid(): 
+
+            form.save()  # use form object to save the data 
+
+            return redirect('students.show', id=student.id)
+            
+    return render(request, 'students/edit.html', context={'form': form})
