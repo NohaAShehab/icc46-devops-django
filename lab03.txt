@@ -1,0 +1,18 @@
+
+
+create application category 
+link the category with product 
+implement crud for category 
+list all , view, edit , delete, create 
+
+category (name, description, image, created_at, updated_At)
+
+u can use generice views and model forms 
+
+don't forget to display the products in each category
+
+hint, use beautiful design , 
+
+000000
+bonus : use django auth for login , register 
+when you add category make sure that the user is authenticated 
