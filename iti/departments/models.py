@@ -1,5 +1,7 @@
 from django.db import models
 
+from django.shortcuts import reverse
+
 # Create your models here.
 
 """
@@ -26,10 +28,17 @@ class Department(models.Model):
     def __str__(self):
         return self.name
 
+    @property
+    def show_url(self):
+        return reverse('departments.show', args=[self.id])
+
     # get all objects from model ??
     @classmethod
     def get_all(cls):
         # order data, exclude some fields , do any operation. 
         return cls.objects.all()
+
+    # define relation between departments and students
+
 
     

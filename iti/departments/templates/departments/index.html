@@ -14,6 +14,12 @@
                 <div class="department-header">
                     <h3 class="department-name">{{ department.name }}</h3>
                     <div class="department-actions">
+                        <a href="{{ department.show_url }}" class="btn-view" title="View Department">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                        </a>
                         <a href="#" class="btn-edit" title="Edit Department">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
@@ -181,6 +187,24 @@
         display: flex;
         align-items: center;
         justify-content: center;
+    }
+
+    .btn-view {
+        color: #667eea;
+        background-color: #f0f4ff;
+        padding: 0.5rem;
+        border-radius: 6px;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .btn-view:hover {
+        background-color: #667eea;
+        color: white;
+        transform: scale(1.1);
     }
 
     .btn-edit {

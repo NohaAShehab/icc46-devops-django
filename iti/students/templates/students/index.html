@@ -1,172 +1,476 @@
 {% extends 'layouts/base.html' %}
 
-{% block body %}
-<style>
-    .table-container {
-        background: white;
-        border-radius: 10px;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        overflow: hidden;
-        margin-top: 2rem;
-    }
-    
-    .table {
-        width: 100%;
-        border-collapse: collapse;
-        margin: 0;
-    }
-    
-    .table th {
-        background: #f8f9fa;
-        padding: 1rem;
-        text-align: left;
-        font-weight: 600;
-        color: #495057;
-        border: 1px solid #dee2e6;
-    }
-    
-    .table td {
-        padding: 1rem;
-        border: 1px solid #dee2e6;
-        vertical-align: middle;
-    }
-    
-    .table tr:hover {
-        background: #f8f9fa;
-    }
-    
-    .table-bordered th,
-    .table-bordered td {
-        border: 1px solid #dee2e6;
-    }
-    
-    .table-bordered thead th {
-        border-bottom: 2px solid #dee2e6;
-        background: #667eea;
-        color: white;
-        font-weight: 600;
-    }
-    
-    .table-bordered tbody tr:nth-child(even) {
-        background: #f8f9fa;
-    }
-    
-    .table-bordered tbody tr:nth-child(odd) {
-        background: white;
-    }
-    
-    .table-bordered tbody tr:hover {
-        background: #e9ecef !important;
-    }
-    
-    .empty-message {
-        text-align: center;
-        padding: 3rem;
-        color: #666;
-        font-style: italic;
-    }
-    
-    .student-count {
-        background: #667eea;
-        color: white;
-        padding: 0.5rem 1rem;
-        border-radius: 20px;
-        display: inline-block;
-        margin-bottom: 1rem;
-        font-weight: 500;
-    }
-    
-    .btn {
-        display: inline-block;
-        padding: 0.5rem 1rem;
-        text-decoration: none;
-        border-radius: 5px;
-        font-size: 0.9rem;
-        font-weight: 500;
-        text-align: center;
-        transition: all 0.3s ease;
-        border: none;
-        cursor: pointer;
-    }
-    
-    .btn-primary {
-        background: #667eea;
-        color: white;
-    }
-    
-    .btn-primary:hover {
-        background: #5a6fd8;
-        transform: translateY(-1px);
-        box-shadow: 0 2px 5px rgba(102, 126, 234, 0.3);
-    }
-    
-    .page-header {
-        margin-bottom: 2rem;
-        padding-bottom: 1rem;
-        border-bottom: 2px solid #e9ecef;
-    }
-    
-    .page-header h1 {
-        color: #333;
-        margin-bottom: 0.5rem;
-    }
-    
-    .debug-info {
-        background: #f8f9fa;
-        border: 1px solid #dee2e6;
-        border-radius: 5px;
-        padding: 1rem;
-        margin-bottom: 1rem;
-        font-family: monospace;
-        font-size: 0.9rem;
-        color: #666;
-    }
-</style>
-
-<div style="margin-top: 70px; padding: 2rem;">
-    <div class="page-header">
-        <h1>Students List</h1>
-        <div class="student-count">
-            Total Students: {{ students|length }}
-            <a href="{% url 'students.create' %}" class="btn btn-primary">Create Student</a>
+{% block content %}
+<div class="container">
+    <div class="students-header">
+        <h1>Students</h1>
+        <div class="header-actions">
+            <a href="{% url 'students.create' %}" class="btn-create">+ Create Student</a>
+            <a href="{% url 'students.createByForm' %}" class="btn-secondary">Create via Form</a>
         </div>
     </div>
-    <a href="{% url 'students.createByForm' %}" class="btn btn-primary">Create Student via Form</a>
 
-    <div class="debug-info">
-        Debug: {{ students }}
-    </div>
-    <div class="table-container">
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Age</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% if students %}
-                    {% for student in students %}
-                    <tr>
-                        <td><strong>{{ student.id }}</strong></td>
-                        <td>{{ student.name }}</td>
-                        <td>{{ student.age }}</td>
-                        <td>
-                            <a href="{{ student.show_url }}" class="btn btn-primary">Show</a>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                {% else %}
-                    <tr>
-                        <td colspan="4" class="empty-message">
-                            No students found. Please add some students to see them here.
-                        </td>
-                    </tr>
-                {% endif %}
-            </tbody>
-        </table>
-    </div>
+    {% if students %}
+        <div class="students-stats">
+            <div class="stat-card">
+                <div class="stat-number">{{ students|length }}</div>
+                <div class="stat-label">Total Students</div>
+            </div>
+        </div>
+
+        <div class="students-grid">
+            {% for student in students %}
+            <div class="student-card">
+                <div class="student-header">
+                    <div class="student-avatar">
+                        {{ student.name|first|upper }}
+                    </div>
+                    <div class="student-actions">
+                        <a href="{{ student.show_url }}" class="btn-view" title="View Student">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                        </a>
+                        <a href="#" class="btn-edit" title="Edit Student">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                <path d="m18.5 2.5 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                            </svg>
+                        </a>
+                        <a href="{{ student.delete_url }}" class="btn-delete" title="Delete Student">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="3,6 5,6 21,6"></polyline>
+                                <path d="m19,6v14a2,2 0 0,1 -2,2H7a2,2 0 0,1 -2,-2V6m3,0V4a2,2 0 0,1 2,-2h4a2,2 0 0,1 2,2v2"></path>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="student-info">
+                    <h3 class="student-name">{{ student.name }}</h3>
+                    <div class="student-details">
+                        <div class="detail-item">
+                            <span class="detail-label">ID:</span>
+                            <span class="detail-value">#{{ student.id }}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Age:</span>
+                            <span class="detail-value">{{ student.age }} years</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Email:</span>
+                            <span class="detail-value">{{ student.email|default:"Not provided" }}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Gender:</span>
+                            <span class="detail-value">{{ student.gender|default:"Not specified" }}</span>
+                        </div>
+                        {% if student.department %}
+                        <div class="detail-item">
+                            <span class="detail-label">Department:</span>
+                            <span class="detail-value highlight">{{ student.department.name }}</span>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <div class="student-meta">
+                    {% if student.created_at %}
+                    <div class="meta-item">
+                        <span class="meta-label">Registered:</span>
+                        <span class="meta-value">{{ student.created_at|date:"M d, Y" }}</span>
+                    </div>
+                    {% endif %}
+                    {% if student.updated_at %}
+                    <div class="meta-item">
+                        <span class="meta-label">Updated:</span>
+                        <span class="meta-value">{{ student.updated_at|date:"M d, Y" }}</span>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <div class="empty-icon">
+                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+            </div>
+            <h3>No Students Yet</h3>
+            <p>Get started by creating your first student</p>
+            <div class="empty-actions">
+                <a href="{% url 'students.create' %}" class="btn-create">Create First Student</a>
+                <a href="{% url 'students.createByForm' %}" class="btn-secondary">Create via Form</a>
+            </div>
+        </div>
+    {% endif %}
 </div>
+
+<style>
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+    }
+
+    .students-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .students-header h1 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin: 0;
+    }
+
+    .header-actions {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+
+    .btn-create {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 0.875rem 1.5rem;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        box-shadow: 0 4px 6px rgba(102, 126, 234, 0.2);
+    }
+
+    .btn-create:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+    }
+
+    .btn-secondary {
+        background: #6c757d;
+        color: white;
+        padding: 0.875rem 1.5rem;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .btn-secondary:hover {
+        background: #5a6268;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(108, 117, 125, 0.3);
+    }
+
+    .students-stats {
+        margin-bottom: 2rem;
+    }
+
+    .stat-card {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 1.5rem;
+        border-radius: 12px;
+        text-align: center;
+        box-shadow: 0 4px 6px rgba(102, 126, 234, 0.2);
+    }
+
+    .stat-number {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+    }
+
+    .stat-label {
+        font-size: 1.1rem;
+        opacity: 0.9;
+    }
+
+    .students-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+        gap: 1.5rem;
+    }
+
+    .student-card {
+        background: white;
+        border-radius: 12px;
+        padding: 1.5rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+        border: 1px solid #e1e5e9;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .student-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+        border-color: #667eea;
+    }
+
+    .student-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        transform: scaleX(0);
+        transition: transform 0.3s ease;
+    }
+
+    .student-card:hover::before {
+        transform: scaleX(1);
+    }
+
+    .student-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 1.5rem;
+    }
+
+    .student-avatar {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-right: 1rem;
+        flex-shrink: 0;
+    }
+
+    .student-actions {
+        display: flex;
+        gap: 0.5rem;
+        flex-shrink: 0;
+    }
+
+    .btn-view, .btn-edit, .btn-delete {
+        padding: 0.5rem;
+        border-radius: 6px;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .btn-view {
+        color: #667eea;
+        background-color: #f0f4ff;
+    }
+
+    .btn-view:hover {
+        background-color: #667eea;
+        color: white;
+        transform: scale(1.1);
+    }
+
+    .btn-edit {
+        color: #28a745;
+        background-color: #f0fff4;
+    }
+
+    .btn-edit:hover {
+        background-color: #28a745;
+        color: white;
+        transform: scale(1.1);
+    }
+
+    .btn-delete {
+        color: #e53e3e;
+        background-color: #fef2f2;
+    }
+
+    .btn-delete:hover {
+        background-color: #e53e3e;
+        color: white;
+        transform: scale(1.1);
+    }
+
+    .student-info {
+        margin-bottom: 1.5rem;
+    }
+
+    .student-name {
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: #333;
+        margin: 0 0 1rem 0;
+    }
+
+    .student-details {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .detail-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 0.9rem;
+    }
+
+    .detail-label {
+        color: #666;
+        font-weight: 500;
+    }
+
+    .detail-value {
+        color: #333;
+        font-weight: 600;
+    }
+
+    .detail-value.highlight {
+        color: #667eea;
+        font-weight: 700;
+    }
+
+    .student-meta {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        padding-top: 1rem;
+        border-top: 1px solid #e1e5e9;
+    }
+
+    .meta-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 0.8rem;
+    }
+
+    .meta-label {
+        color: #666;
+        font-weight: 500;
+    }
+
+    .meta-value {
+        color: #333;
+        font-weight: 600;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 4rem 2rem;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+        border: 1px solid #e1e5e9;
+    }
+
+    .empty-icon {
+        color: #cbd5e0;
+        margin-bottom: 1.5rem;
+    }
+
+    .empty-state h3 {
+        font-size: 1.5rem;
+        color: #333;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+    }
+
+    .empty-state p {
+        color: #666;
+        margin-bottom: 2rem;
+        font-size: 1.1rem;
+    }
+
+    .empty-actions {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .container {
+            padding: 1rem;
+        }
+        
+        .students-header {
+            flex-direction: column;
+            align-items: stretch;
+            text-align: center;
+        }
+        
+        .students-header h1 {
+            font-size: 2rem;
+        }
+        
+        .header-actions {
+            justify-content: center;
+        }
+        
+        .students-grid {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+        
+        .student-card {
+            padding: 1.25rem;
+        }
+        
+        .student-header {
+            flex-direction: column;
+            gap: 1rem;
+            align-items: stretch;
+        }
+        
+        .student-actions {
+            justify-content: center;
+        }
+        
+        .empty-actions {
+            flex-direction: column;
+            align-items: center;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .students-header h1 {
+            font-size: 1.75rem;
+        }
+        
+        .btn-create, .btn-secondary {
+            padding: 0.75rem 1.25rem;
+            font-size: 0.9rem;
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+        }
+    }
+</style>
 {% endblock %}

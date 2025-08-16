@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from departments.forms import DepartmentForm
 from departments.models import Department
@@ -34,3 +34,10 @@ def get_all_departments(request):
     return render(request, 'departments/index.html', 
     context={'departments': departments})
 
+
+
+def show(request, id):
+    department = get_object_or_404(Department, id=id)
+
+    return render(request, 'departments/show.html', 
+    context={'department': department})

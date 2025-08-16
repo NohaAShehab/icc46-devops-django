@@ -1,5 +1,6 @@
 from django.db import models
 from django.shortcuts import reverse
+from departments.models import Department
 # Create your models here.
 
 
@@ -61,6 +62,17 @@ class Student(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, null=True) # this value will be automatically set when the object is created
     updated_at = models.DateTimeField(auto_now=True, null=True) # this value will be automatically set when the object is updated
 
+
+    # define relation between students and departments
+
+    # if you want to get students related to a department ??
+    # backword relation ??
+    # student. department is an object  ==> get all students related to a department 
+
+    # student.department.students_set.all()
+    department = models.ForeignKey(Department, on_delete=models.CASCADE,
+     null=True, related_name='students')
+    
     def __str__(self):
         return f"{self.name}"
 

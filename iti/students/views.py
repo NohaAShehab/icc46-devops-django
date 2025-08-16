@@ -81,6 +81,9 @@ def show_student(request, id):
     use get_object_or_404 function 
     """
     student = get_object_or_404(Student, id=id)
+
+    print(f"student, {student.department}, {type(student.department)}")
+
     return render(request, 'students/show.html', 
     context={'student': student})
 
@@ -166,7 +169,9 @@ def create_via_form(request):
         if form.is_valid():
             # create the student ?? request.POST, form.cleaned_data ??
             print(form.cleaned_data)
+            # you must pass the department  as object not the id 
             student = Student.objects.create(**form.cleaned_data)
+            
             return redirect('students.show', id=student.id)
 
     return render(request, 'students/createByForm.html', 

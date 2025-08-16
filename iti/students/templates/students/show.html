@@ -262,6 +262,25 @@
                 <span class="detail-value">{{ student.age }} years old</span>
             </div>
             
+            {% if student.department %}
+            <div class="detail-row">
+                <span class="detail-label">Department:</span>
+                <span class="detail-value highlight"><a href="{{ student.department.show_url }}">{{ student.department.name }}</a></span>
+            </div>
+            {% else %}
+            <div class="detail-row">
+                <span class="detail-label">Department:</span>
+                <span class="detail-value">Not assigned</span>
+            </div>
+            {% endif %}
+            
+            {% if student.birth_date %}
+            <div class="detail-row">
+                <span class="detail-label">Birth Date:</span>
+                <span class="detail-value">{{ student.birth_date|date:"F j, Y" }}</span>
+            </div>
+            {% endif %}
+            
             {% if student.created_at %}
             <div class="detail-row">
                 <span class="detail-label">Registration Date:</span>

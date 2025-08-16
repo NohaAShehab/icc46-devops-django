@@ -1,13 +1,20 @@
 from django import forms
 from students.models import Student
+from departments.models import Department
 import re
 
 class StudentForm(forms.Form):
     name = forms.CharField(max_length=255, required=True)
+
     age = forms.IntegerField(required=True)
+
     email = forms.EmailField(required=True)
+
     gender = forms.ChoiceField(choices=[('male', 'Male'), ('female', 'Female')], required=True)
+
     birth_date = forms.DateField(required=True)
+
+    department= forms.ModelChoiceField(queryset=Department.objects.all(), required=True)
 
 
     # define validators for the form
