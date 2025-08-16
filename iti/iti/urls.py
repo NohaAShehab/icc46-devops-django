@@ -16,6 +16,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
 # from home.views import test, user_home, user_profile
 
 # best practice is to create urls file in each app folder
@@ -28,4 +30,9 @@ urlpatterns = [
     path('home/', include('home.urls')),
     path('students/', include('students.urls')),
     path('departments/', include('departments.urls')),
-]
+    path('courses/', include('courses.urls')),
+    
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+
+# I need to define url for media files 

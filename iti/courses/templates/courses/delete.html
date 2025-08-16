@@ -1,0 +1,447 @@
+{% extends 'layouts/base.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <h1>Delete Course</h1>
+        <p class="subtitle">Confirm course deletion</p>
+        <div class="header-actions">
+            <a href="{{ course.get_show_url }}" class="btn btn-secondary">Back to Course</a>
+            <a href="{% url 'courses.index' %}" class="btn btn-outline">Back to List</a>
+        </div>
+    </div>
+
+    <div class="delete-confirmation-container">
+        <div class="course-preview">
+            <div class="course-image-section">
+                {% if course.image %}
+                    <img src="{{ course.image_url }}" alt="{{ course.name }}" class="course-preview-image">
+                {% else %}
+                    <div class="course-image-placeholder">
+                        <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 0 3-3h7z"></path>
+                        </svg>
+                    </div>
+                {% endif %}
+            </div>
+            
+            <div class="course-info">
+                <h2 class="course-name">{{ course.name }}</h2>
+                <div class="course-details">
+                    <div class="detail-item">
+                        <span class="detail-label">Course ID:</span>
+                        <span class="detail-value">#{{ course.id }}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Price:</span>
+                        <span class="detail-value price">${{ course.price }}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Created:</span>
+                        <span class="detail-value">{{ course.created_at|date:"M d, Y" }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="warning-section">
+            <div class="warning-icon">
+                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                    <line x1="12" y1="9" x2="12" y2="13"></line>
+                    <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                </svg>
+            </div>
+            
+            <h3 class="warning-title">Are you sure you want to delete this course?</h3>
+            
+            <div class="warning-message">
+                <p><strong>This action cannot be undone.</strong> Deleting this course will permanently remove:</p>
+                <ul class="warning-list">
+                    <li>Course information and description</li>
+                    <li>Course image (if any)</li>
+                    <li>All associated data</li>
+                </ul>
+                <p class="warning-note">Please make sure you have backed up any important information before proceeding.</p>
+            </div>
+        </div>
+
+        <div class="confirmation-actions">
+            <form method="post" class="delete-form">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger confirm-delete">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="3,6 5,6 21,6"></polyline>
+                        <path d="m19,6v14a2,2 0 0,1 -2,2H7a2,2 0 0,1 -2,-2V6m3,0V4a2,2 0 0,1 2,-2h4a2,2 0 0,1 2,2v2"></path>
+                    </svg>
+                    Yes, Delete Course
+                </button>
+            </form>
+            
+            <a href="{{ course.get_show_url }}" class="btn btn-secondary cancel-delete">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 6L6 18"></path>
+                    <path d="M6 6l12 12"></path>
+                </svg>
+                Cancel
+            </a>
+        </div>
+    </div>
+</div>
+
+<style>
+    .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 2rem;
+    }
+
+    .page-header {
+        text-align: center;
+        margin-bottom: 2rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 3px solid #667eea;
+    }
+    
+    .page-header h1 {
+        color: #333;
+        font-size: 2.5rem;
+        margin-bottom: 0.5rem;
+        font-weight: 700;
+    }
+    
+    .page-header .subtitle {
+        color: #666;
+        font-size: 1.1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .header-actions {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+    
+    .delete-confirmation-container {
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+        overflow: hidden;
+        border: 1px solid #e1e5e9;
+    }
+
+    .course-preview {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 2rem;
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .course-preview::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 200px;
+        height: 200px;
+        background: rgba(255,255,255,0.1);
+        border-radius: 50%;
+        transform: translate(100px, -100px);
+    }
+
+    .course-image-section {
+        flex-shrink: 0;
+        z-index: 1;
+        position: relative;
+    }
+
+    .course-preview-image {
+        width: 120px;
+        height: 90px;
+        border-radius: 8px;
+        object-fit: cover;
+        border: 3px solid rgba(255,255,255,0.3);
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+
+    .course-image-placeholder {
+        width: 120px;
+        height: 90px;
+        border-radius: 8px;
+        background: rgba(255,255,255,0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 3px solid rgba(255,255,255,0.3);
+        color: rgba(255,255,255,0.8);
+    }
+
+    .course-info {
+        flex: 1;
+        z-index: 1;
+        position: relative;
+    }
+
+    .course-name {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        line-height: 1.2;
+    }
+
+    .course-details {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .detail-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 0.95rem;
+    }
+
+    .detail-label {
+        opacity: 0.9;
+        font-weight: 500;
+    }
+
+    .detail-value {
+        font-weight: 600;
+    }
+
+    .detail-value.price {
+        color: #ffd700;
+        font-weight: 700;
+    }
+
+    .warning-section {
+        padding: 3rem 2rem;
+        text-align: center;
+        background: #fff5f5;
+        border-bottom: 1px solid #fed7d7;
+    }
+
+    .warning-icon {
+        margin-bottom: 1.5rem;
+        color: #e53e3e;
+    }
+
+    .warning-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #c53030;
+        margin-bottom: 1.5rem;
+    }
+
+    .warning-message {
+        max-width: 500px;
+        margin: 0 auto;
+        text-align: left;
+    }
+
+    .warning-message p {
+        color: #2d3748;
+        line-height: 1.6;
+        margin-bottom: 1rem;
+    }
+
+    .warning-message strong {
+        color: #c53030;
+    }
+
+    .warning-list {
+        list-style: none;
+        padding: 0;
+        margin: 1rem 0;
+    }
+
+    .warning-list li {
+        color: #4a5568;
+        padding: 0.5rem 0;
+        padding-left: 1.5rem;
+        position: relative;
+        line-height: 1.5;
+    }
+
+    .warning-list li::before {
+        content: "⚠️";
+        position: absolute;
+        left: 0;
+        top: 0.5rem;
+        font-size: 0.9rem;
+    }
+
+    .warning-note {
+        color: #718096;
+        font-style: italic;
+        font-size: 0.9rem;
+        margin-top: 1rem;
+        padding: 1rem;
+        background: #f7fafc;
+        border-radius: 6px;
+        border-left: 4px solid #e53e3e;
+    }
+
+    .confirmation-actions {
+        padding: 2rem;
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        flex-wrap: wrap;
+        background: #f8f9fa;
+    }
+
+    .delete-form {
+        margin: 0;
+    }
+
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.875rem 1.5rem;
+        border-radius: 8px;
+        text-decoration: none;
+        font-size: 1rem;
+        font-weight: 600;
+        text-align: center;
+        transition: all 0.3s ease;
+        border: none;
+        cursor: pointer;
+        min-width: 160px;
+        justify-content: center;
+    }
+
+    .btn-danger {
+        background: #e53e3e;
+        color: white;
+        box-shadow: 0 4px 6px rgba(229, 62, 62, 0.2);
+    }
+
+    .btn-danger:hover {
+        background: #c53030;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(229, 62, 62, 0.4);
+    }
+
+    .btn-secondary {
+        background: #6c757d;
+        color: white;
+    }
+
+    .btn-secondary:hover {
+        background: #5a6268;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(108, 117, 125, 0.3);
+    }
+
+    .btn-outline {
+        background: transparent;
+        color: #667eea;
+        border: 2px solid #667eea;
+    }
+
+    .btn-outline:hover {
+        background: #667eea;
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+    }
+
+    .confirm-delete {
+        background: #dc3545;
+        color: white;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .confirm-delete:hover {
+        background: #c82333;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(220, 53, 69, 0.4);
+    }
+
+    .cancel-delete {
+        background: #6c757d;
+        color: white;
+    }
+
+    .cancel-delete:hover {
+        background: #5a6268;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(108, 117, 125, 0.3);
+    }
+
+    @media (max-width: 768px) {
+        .container {
+            padding: 1rem;
+        }
+        
+        .page-header h1 {
+            font-size: 2rem;
+        }
+        
+        .course-preview {
+            flex-direction: column;
+            text-align: center;
+            gap: 1rem;
+            padding: 1.5rem;
+        }
+        
+        .course-name {
+            font-size: 1.8rem;
+        }
+        
+        .warning-section {
+            padding: 2rem 1.5rem;
+        }
+        
+        .warning-title {
+            font-size: 1.3rem;
+        }
+        
+        .confirmation-actions {
+            padding: 1.5rem;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .btn {
+            width: 100%;
+            max-width: 300px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .page-header h1 {
+            font-size: 1.75rem;
+        }
+        
+        .course-preview {
+            padding: 1.25rem;
+        }
+        
+        .course-name {
+            font-size: 1.6rem;
+        }
+        
+        .warning-section {
+            padding: 1.5rem 1rem;
+        }
+        
+        .confirmation-actions {
+            padding: 1.25rem;
+        }
+    }
+</style>
+{% endblock %}

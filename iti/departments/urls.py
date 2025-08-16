@@ -7,5 +7,5 @@ urlpatterns = [
     
     path('all', get_all_departments, name='departments.all'),
 
-    path('<int:id>', show, name='departments.show'),
+    path('<int:id>', show, name='departments.show')
 ]

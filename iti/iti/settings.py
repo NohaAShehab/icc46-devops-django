@@ -43,6 +43,9 @@ INSTALLED_APPS = [
     'students.apps.StudentsConfig',
     'home.apps.HomeConfig',
     'departments.apps.DepartmentsConfig',
+    'courses.apps.CoursesConfig',
+    'django_cleanup.apps.CleanupConfig',
+    # automatically delete media files when object is deleted 
 ]
 
 MIDDLEWARE = [
@@ -148,3 +151,9 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# media files 
+import os 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
