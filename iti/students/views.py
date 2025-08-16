@@ -1,7 +1,11 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from students.models import Student
 from django.shortcuts import get_object_or_404, redirect
+from students.forms import StudentForm
+from students.models import Student
+
+
+
 
 # Create your views here.
 
@@ -121,7 +125,17 @@ def create_student(request):
         gender = request.POST.get('gender')
         birth_date = request.POST.get('birth_date')
 
-    
+        # check if eamil exists  
+        if Student.objects.filter(email=email).exists():
+            # I need to show a message to the user 
+            return render(request, 'students/create.html', context={'message': 'Email already exists'})
+        else:
+            # I need to create a new student object 
+            student = Student()
+            student.name = name
+            student.email = email
+            student.age = age
+            student.gender = gender
         # I need to create a new student object 
         student = Student()
         student.name = name
@@ -144,5 +158,17 @@ def create_student(request):
 
 
 
-    
-   
+def create_via_form(request):
+    # I need to create a new student object 
+    form = StudentForm()
+    if request.method == 'POST':
+        form = StudentForm(request.POST)
+        if form.is_valid():
+            # create the student ?? request.POST, form.cleaned_data ??
+            print(form.cleaned_data)
+            student = Student.objects.create(**form.cleaned_data)
+            return redirect('students.show', id=student.id)
+
+    return render(request, 'students/createByForm.html', 
+    context={'form': form})
+
