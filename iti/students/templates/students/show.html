@@ -283,8 +283,8 @@
         </div>
         
         <div class="actions-section">
-            <a href="#" class="btn btn-primary">Edit Student</a>
-            <a href="{% url 'students.delete' student.id %}" class="btn btn-danger">Delete Student</a>
+            <a href="" class="btn btn-primary">Edit Student</a>
+            <a href="{{ student.delete_url }}" class="btn btn-danger">Delete Student</a>
         </div>
     </div>
 </div>

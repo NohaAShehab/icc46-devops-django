@@ -154,7 +154,7 @@
                         <td>{{ student.name }}</td>
                         <td>{{ student.age }}</td>
                         <td>
-                            <a href="{% url 'students.show' student.id %}" class="btn btn-primary">Show</a>
+                            <a href="{{ student.show_url }}" class="btn btn-primary">Show</a>
                         </td>
                     </tr>
                     {% endfor %}

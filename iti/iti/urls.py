@@ -27,4 +27,5 @@ urlpatterns = [
     # path('profile/<int:id>', user_profile, name='user_profile') # limit the id to be an integer only
     path('home/', include('home.urls')),
     path('students/', include('students.urls')),
+    path('departments/', include('departments.urls')),
 ]

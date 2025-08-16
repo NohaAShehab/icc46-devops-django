@@ -1,0 +1,319 @@
+{% extends 'layouts/base.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="departments-header">
+        <h1>Departments</h1>
+        <a href="{% url 'departments.create' %}" class="btn-create">+ Create Department</a>
+    </div>
+
+    {% if departments %}
+        <div class="departments-grid">
+            {% for department in departments %}
+            <div class="department-card">
+                <div class="department-header">
+                    <h3 class="department-name">{{ department.name }}</h3>
+                    <div class="department-actions">
+                        <a href="#" class="btn-edit" title="Edit Department">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                <path d="m18.5 2.5 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                            </svg>
+                        </a>
+                        <a href="#" class="btn-delete" title="Delete Department">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="3,6 5,6 21,6"></polyline>
+                                <path d="m19,6v14a2,2 0 0,1 -2,2H7a2,2 0 0,1 -2,-2V6m3,0V4a2,2 0 0,1 2,-2h4a2,2 0 0,1 2,2v2"></path>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                
+                {% if department.description %}
+                <p class="department-description">{{ department.description }}</p>
+                {% else %}
+                <p class="department-description no-description">No description available</p>
+                {% endif %}
+                
+                <div class="department-meta">
+                    <div class="meta-item">
+                        <span class="meta-label">Created:</span>
+                        <span class="meta-value">{{ department.created_at|date:"M d, Y" }}</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">Updated:</span>
+                        <span class="meta-value">{{ department.updated_at|date:"M d, Y" }}</span>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <div class="empty-icon">
+                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M3 7V5a2 2 0 0 1 2-2h2"></path>
+                    <path d="M17 3h2a2 2 0 0 1 2 2v2"></path>
+                    <path d="M21 17v2a2 2 0 0 1-2 2h-2"></path>
+                    <path d="M7 21H5a2 2 0 0 1-2-2v-2"></path>
+                    <path d="M7 3h10v18H7z"></path>
+                </svg>
+            </div>
+            <h3>No Departments Yet</h3>
+            <p>Get started by creating your first department</p>
+            <a href="{% url 'create_department' %}" class="btn-create">Create First Department</a>
+        </div>
+    {% endif %}
+</div>
+
+<style>
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+    }
+
+    .departments-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .departments-header h1 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin: 0;
+    }
+
+    .btn-create {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 0.875rem 1.5rem;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        box-shadow: 0 4px 6px rgba(102, 126, 234, 0.2);
+    }
+
+    .btn-create:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+    }
+
+    .departments-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        gap: 1.5rem;
+    }
+
+    .department-card {
+        background: white;
+        border-radius: 12px;
+        padding: 1.5rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+        border: 1px solid #e1e5e9;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .department-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+        border-color: #667eea;
+    }
+
+    .department-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        transform: scaleX(0);
+        transition: transform 0.3s ease;
+    }
+
+    .department-card:hover::before {
+        transform: scaleX(1);
+    }
+
+    .department-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 1rem;
+    }
+
+    .department-name {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #333;
+        margin: 0;
+        flex: 1;
+        margin-right: 1rem;
+    }
+
+    .department-actions {
+        display: flex;
+        gap: 0.5rem;
+        flex-shrink: 0;
+    }
+
+    .btn-edit, .btn-delete {
+        padding: 0.5rem;
+        border-radius: 6px;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .btn-edit {
+        color: #667eea;
+        background-color: #f0f4ff;
+    }
+
+    .btn-edit:hover {
+        background-color: #667eea;
+        color: white;
+        transform: scale(1.1);
+    }
+
+    .btn-delete {
+        color: #e53e3e;
+        background-color: #fef2f2;
+    }
+
+    .btn-delete:hover {
+        background-color: #e53e3e;
+        color: white;
+        transform: scale(1.1);
+    }
+
+    .department-description {
+        color: #666;
+        line-height: 1.6;
+        margin-bottom: 1.5rem;
+        min-height: 3rem;
+    }
+
+    .department-description.no-description {
+        color: #999;
+        font-style: italic;
+    }
+
+    .department-meta {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        padding-top: 1rem;
+        border-top: 1px solid #e1e5e9;
+    }
+
+    .meta-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 0.875rem;
+    }
+
+    .meta-label {
+        color: #666;
+        font-weight: 500;
+    }
+
+    .meta-value {
+        color: #333;
+        font-weight: 600;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 4rem 2rem;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+        border: 1px solid #e1e5e9;
+    }
+
+    .empty-icon {
+        color: #cbd5e0;
+        margin-bottom: 1.5rem;
+    }
+
+    .empty-state h3 {
+        font-size: 1.5rem;
+        color: #333;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+    }
+
+    .empty-state p {
+        color: #666;
+        margin-bottom: 2rem;
+        font-size: 1.1rem;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .container {
+            padding: 1rem;
+        }
+        
+        .departments-header {
+            flex-direction: column;
+            align-items: stretch;
+            text-align: center;
+        }
+        
+        .departments-header h1 {
+            font-size: 2rem;
+        }
+        
+        .departments-grid {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+        
+        .department-card {
+            padding: 1.25rem;
+        }
+        
+        .department-header {
+            flex-direction: column;
+            gap: 1rem;
+            align-items: stretch;
+        }
+        
+        .department-actions {
+            justify-content: center;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .departments-header h1 {
+            font-size: 1.75rem;
+        }
+        
+        .btn-create {
+            padding: 0.75rem 1.25rem;
+            font-size: 0.9rem;
+        }
+    }
+</style>
+{% endblock %}
