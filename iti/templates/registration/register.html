@@ -1,0 +1,607 @@
+{% extends 'layouts/base.html' %}
+
+{% block content %}
+<div class="register-container">
+    <div class="register-card">
+        <div class="register-header">
+            <div class="logo-section">
+                <div class="logo-icon">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="8.5" cy="7" r="4"></circle>
+                        <line x1="20" y1="8" x2="20" y2="14"></line>
+                        <line x1="23" y1="11" x2="17" y2="11"></line>
+                    </svg>
+                </div>
+                <h1 class="register-title">Create Account</h1>
+                <p class="register-subtitle">Join us and start your journey today</p>
+            </div>
+        </div>
+
+        <div class="register-form-section">
+            {% if form.errors %}
+            <div class="error-message">
+                <div class="error-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="15" y1="9" x2="9" y2="15"></line>
+                        <line x1="9" y1="9" x2="15" y2="15"></line>
+                    </svg>
+                </div>
+                <div class="error-content">
+                    <h4>Registration Failed</h4>
+                    <p>Please correct the errors below and try again.</p>
+                </div>
+            </div>
+            {% endif %}
+
+            <form method="post" class="register-form">
+                {% csrf_token %}
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="{{ form.first_name.id_for_label }}" class="form-label">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                            First Name
+                        </label>
+                        {{ form.first_name }}
+                        {% if form.first_name.errors %}
+                        <div class="field-error">{{ form.first_name.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="{{ form.last_name.id_for_label }}" class="form-label">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                            Last Name
+                        </label>
+                        {{ form.last_name }}
+                        {% if form.last_name.errors %}
+                        <div class="field-error">{{ form.last_name.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="{{ form.username.id_for_label }}" class="form-label">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                            Username
+                        </label>
+                        {{ form.username }}
+                        {% if form.username.errors %}
+                        <div class="field-error">{{ form.username.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="{{ form.email.id_for_label }}" class="form-label">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                                <polyline points="22,6 12,13 2,6"></polyline>
+                            </svg>
+                            Email
+                        </label>
+                        {{ form.email }}
+                        {% if form.email.errors %}
+                        <div class="field-error">{{ form.email.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="{{ form.password1.id_for_label }}" class="form-label">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                <circle cx="12" cy="16" r="1"></circle>
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                            </svg>
+                            Password
+                        </label>
+                        {{ form.password1 }}
+                        {% if form.password1.errors %}
+                        <div class="field-error">{{ form.password1.errors.0 }}</div>
+                        {% endif %}
+                        {% if form.password1.help_text %}
+                        <div class="help-text">{{ form.password1.help_text }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="{{ form.password2.id_for_label }}" class="form-label">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                <circle cx="12" cy="16" r="1"></circle>
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                            </svg>
+                            Confirm Password
+                        </label>
+                        {{ form.password2 }}
+                        {% if form.password2.errors %}
+                        <div class="field-error">{{ form.password2.errors.0 }}</div>
+                        {% endif %}
+                        {% if form.password2.help_text %}
+                        <div class="help-text">{{ form.password2.help_text }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="form-options">
+                    <label class="checkbox-container">
+                        <input type="checkbox" name="terms" id="terms" required>
+                        <span class="checkmark"></span>
+                        I agree to the <a href="#" class="terms-link">Terms of Service</a> and <a href="#" class="terms-link">Privacy Policy</a>
+                    </label>
+                </div>
+
+                <button type="submit" class="register-button">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="8.5" cy="7" r="4"></circle>
+                        <line x1="20" y1="8" x2="20" y2="14"></line>
+                        <line x1="23" y1="11" x2="17" y2="11"></line>
+                    </svg>
+                    Create Account
+                </button>
+            </form>
+
+            <div class="register-footer">
+                <p class="footer-text">
+                    Already have an account? 
+                    <a href="{% url 'login' %}" class="login-link">Sign in</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="register-decoration">
+        <div class="floating-shapes">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+            <div class="shape shape-3"></div>
+            <div class="shape shape-4"></div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .register-container {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 2rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .register-card {
+        background: white;
+        border-radius: 24px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+        overflow: hidden;
+        width: 100%;
+        max-width: 600px;
+        position: relative;
+        z-index: 10;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .register-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 3rem 2rem 2rem;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .register-header::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -50%;
+        width: 200px;
+        height: 200px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        animation: float 6s ease-in-out infinite;
+    }
+
+    .logo-section {
+        position: relative;
+        z-index: 2;
+    }
+
+    .logo-icon {
+        margin: 0 auto 1.5rem;
+        width: 80px;
+        height: 80px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 3px solid rgba(255, 255, 255, 0.3);
+        color: white;
+    }
+
+    .register-title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .register-subtitle {
+        font-size: 1.1rem;
+        opacity: 0.9;
+        font-weight: 400;
+    }
+
+    .register-form-section {
+        padding: 2.5rem 2rem;
+    }
+
+    .error-message {
+        background: #fef2f2;
+        border: 1px solid #fecaca;
+        border-radius: 12px;
+        padding: 1rem;
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: flex-start;
+        gap: 0.75rem;
+        color: #dc2626;
+    }
+
+    .error-icon {
+        flex-shrink: 0;
+        margin-top: 2px;
+    }
+
+    .error-content h4 {
+        margin: 0 0 0.25rem 0;
+        font-size: 1rem;
+        font-weight: 600;
+    }
+
+    .error-content p {
+        margin: 0;
+        font-size: 0.9rem;
+        opacity: 0.8;
+    }
+
+    .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .form-group {
+        margin-bottom: 1rem;
+    }
+
+    .form-label {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-weight: 600;
+        color: #374151;
+        margin-bottom: 0.5rem;
+        font-size: 0.95rem;
+    }
+
+    .form-label svg {
+        color: #667eea;
+    }
+
+    .register-form input[type="text"],
+    .register-form input[type="email"],
+    .register-form input[type="password"],
+    .form-input {
+        width: 100%;
+        padding: 1rem 1.25rem;
+        border: 2px solid #e5e7eb;
+        border-radius: 12px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        background: #f9fafb;
+        color: #374151;
+        box-sizing: border-box;
+    }
+
+    .register-form input[type="text"]:focus,
+    .register-form input[type="email"]:focus,
+    .register-form input[type="password"]:focus,
+    .form-input:focus {
+        outline: none;
+        border-color: #667eea;
+        background: white;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        transform: translateY(-1px);
+    }
+
+    /* Additional styling for better form appearance */
+    .register-form input::placeholder {
+        color: #9ca3af;
+        opacity: 1;
+    }
+
+    .register-form input:invalid {
+        border-color: #f87171;
+    }
+
+    .register-form input:valid {
+        border-color: #10b981;
+    }
+
+    .field-error {
+        color: #dc2626;
+        font-size: 0.85rem;
+        margin-top: 0.5rem;
+        padding-left: 0.5rem;
+        border-left: 3px solid #dc2626;
+    }
+
+    .help-text {
+        color: #6b7280;
+        font-size: 0.85rem;
+        margin-top: 0.5rem;
+        padding-left: 0.5rem;
+        border-left: 3px solid #d1d5db;
+        line-height: 1.4;
+    }
+
+
+
+    .form-options {
+        margin-bottom: 2rem;
+    }
+
+    .checkbox-container {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.75rem;
+        cursor: pointer;
+        font-size: 0.9rem;
+        color: #6b7280;
+        user-select: none;
+        line-height: 1.4;
+    }
+
+    .checkbox-container input[type="checkbox"] {
+        display: none;
+    }
+
+    .checkmark {
+        width: 18px;
+        height: 18px;
+        border: 2px solid #d1d5db;
+        border-radius: 4px;
+        position: relative;
+        transition: all 0.3s ease;
+        flex-shrink: 0;
+        margin-top: 2px;
+    }
+
+    .checkbox-container input[type="checkbox"]:checked + .checkmark {
+        background: #667eea;
+        border-color: #667eea;
+    }
+
+    .checkbox-container input[type="checkbox"]:checked + .checkmark::after {
+        content: '✓';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: white;
+        font-size: 12px;
+        font-weight: bold;
+    }
+
+    .terms-link {
+        color: #667eea;
+        text-decoration: none;
+        font-weight: 500;
+        transition: color 0.3s ease;
+    }
+
+    .terms-link:hover {
+        color: #5a67d8;
+        text-decoration: underline;
+    }
+
+    .register-button {
+        width: 100%;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        padding: 1rem 1.5rem;
+        border-radius: 12px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    }
+
+    .register-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+    }
+
+    .register-button:active {
+        transform: translateY(0);
+    }
+
+    .register-footer {
+        text-align: center;
+        margin-top: 2rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid #e5e7eb;
+    }
+
+    .footer-text {
+        color: #6b7280;
+        font-size: 0.9rem;
+        margin: 0;
+    }
+
+    .login-link {
+        color: #667eea;
+        text-decoration: none;
+        font-weight: 600;
+        transition: color 0.3s ease;
+    }
+
+    .login-link:hover {
+        color: #5a67d8;
+        text-decoration: underline;
+    }
+
+    .register-decoration {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 1;
+    }
+
+    .floating-shapes {
+        position: relative;
+        width: 100%;
+        height: 100%;
+    }
+
+    .shape {
+        position: absolute;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        animation: float 8s ease-in-out infinite;
+    }
+
+    .shape-1 {
+        width: 80px;
+        height: 80px;
+        top: 20%;
+        left: 10%;
+        animation-delay: 0s;
+    }
+
+    .shape-2 {
+        width: 120px;
+        height: 120px;
+        top: 60%;
+        right: 15%;
+        animation-delay: 2s;
+    }
+
+    .shape-3 {
+        width: 60px;
+        height: 60px;
+        bottom: 20%;
+        left: 20%;
+        animation-delay: 4s;
+    }
+
+    .shape-4 {
+        width: 100px;
+        height: 100px;
+        top: 30%;
+        right: 30%;
+        animation-delay: 6s;
+    }
+
+    @keyframes float {
+        0%, 100% {
+            transform: translateY(0px) rotate(0deg);
+        }
+        50% {
+            transform: translateY(-20px) rotate(180deg);
+        }
+    }
+
+    @media (max-width: 768px) {
+        .register-container {
+            padding: 1rem;
+        }
+        
+        .register-card {
+            max-width: 100%;
+            border-radius: 20px;
+        }
+        
+        .register-header {
+            padding: 2rem 1.5rem 1.5rem;
+        }
+        
+        .register-title {
+            font-size: 2rem;
+        }
+        
+        .register-form-section {
+            padding: 2rem 1.5rem;
+        }
+        
+        .form-row {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .register-header {
+            padding: 1.5rem 1rem 1rem;
+        }
+        
+        .register-title {
+            font-size: 1.75rem;
+        }
+        
+        .register-form-section {
+            padding: 1.5rem 1rem;
+        }
+        
+        .logo-icon {
+            width: 60px;
+            height: 60px;
+        }
+        
+        .logo-icon svg {
+            width: 32px;
+            height: 32px;
+        }
+        
+        .form-row {
+            gap: 0.75rem;
+        }
+    }
+</style>
+
+
+{% endblock %}

@@ -33,3 +33,11 @@ save images?? media ??
 
 in  postgres --> by default returned queryset 
 ordered by last update data 
+
+
+# you to create register and login functionality for your app ?
+## tables auth_user ??
+# login implement dashbaord ??
+# use these built-in functionality to add login and register to your project ??
+
+https://docs.djangoproject.com/en/5.2/topics/auth/default/

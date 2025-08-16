@@ -4,6 +4,8 @@ from django.shortcuts import get_object_or_404, redirect
 from students.forms import StudentForm, StudentModelForm
 from students.models import Student
 
+from django.contrib.auth.decorators import login_required
+
 
 
 
@@ -160,7 +162,7 @@ def create_student(request):
 
 
 
-
+@login_required
 def create_via_form(request):
     # I need to create a new student object 
     form = StudentForm()
